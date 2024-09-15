@@ -9,6 +9,7 @@
           <b-nav-item href="/">Inicio</b-nav-item>
           <b-nav-item href="/equipos">Inventario</b-nav-item>
           <b-nav-item href="/agregar">Agregar Equipo</b-nav-item>
+          <b-nav-item href="/importar">Importar datos</b-nav-item>
         </b-navbar-nav>
   
         <b-navbar-nav class="ml-auto">

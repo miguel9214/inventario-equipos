@@ -4,6 +4,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from '@/views/HomeView.vue';
 import ListaEquipos from '@/components/ListaEquipos.vue';
 import AgregarEquipo from '@/components/AgregarEquipo.vue';
+import ImportarDatos from '@/components/ImportarDatos.vue';
 
 // Configurar las rutas
 const routes = [
@@ -22,6 +23,12 @@ const routes = [
     name: 'AgregarEquipo',
     component: AgregarEquipo
   },
+  {
+    path: '/importar',
+    name: 'ImportarDatos',
+    component: ImportarDatos
+  },
+
   {
     path: '/:pathMatch(.*)*', // Manejar rutas no encontradas
     redirect: '/'
