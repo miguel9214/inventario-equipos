@@ -1,32 +1,32 @@
 import { createApp } from 'vue';
 import App from './App.vue';
-import router from './router'; // Importa el router para manejar las rutas
+import router from './router';
 
-// Importar Bootstrap y BootstrapVue CSS
-import 'bootstrap/dist/css/bootstrap.css';
-import 'bootstrap-vue/dist/bootstrap-vue.css';
+// Importar Bootstrap CSS
+import 'bootstrap/dist/css/bootstrap.min.css';
+// Importar BootstrapVue 3 CSS
+import 'bootstrap-vue-3/dist/bootstrap-vue-3.css';
 
-// Importar BootstrapVue
-import { BootstrapVue3, IconsPlugin } from 'bootstrap-vue-3';
+// Importar BootstrapVue 3
+import BootstrapVue3 from 'bootstrap-vue-3';
 
 // Importar FontAwesome
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faTrash, faPlus, faEdit } from '@fortawesome/free-solid-svg-icons'; // Añadir más íconos si los necesitas
+import { faTrash, faPlus, faEdit } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
 // Importar Firebase
-import { db } from './firebase'; // Archivo donde configuramos Firebase
+import { db } from './firebase';
 
-// Configurar SweetAlert2 (opcional, se puede usar directamente en los componentes)
+// Configurar SweetAlert2
 import Swal from 'sweetalert2';
-window.Swal = Swal; // Hacemos Swal global para facilitar su uso
+window.Swal = Swal;
 
 // Crear la aplicación Vue
 const app = createApp(App);
 
-// Instalar BootstrapVue
+// Instalar BootstrapVue 3
 app.use(BootstrapVue3);
-app.use(IconsPlugin);
 
 // Añadir los íconos de FontAwesome a la biblioteca
 library.add(faTrash, faPlus, faEdit);
@@ -35,7 +35,7 @@ library.add(faTrash, faPlus, faEdit);
 app.component('font-awesome-icon', FontAwesomeIcon);
 
 // Configurar la instancia de Vue
-app.use(router); // Añadir el router a la instancia de Vue
+app.use(router);
 
 // Montar la aplicación
 app.mount('#app');
