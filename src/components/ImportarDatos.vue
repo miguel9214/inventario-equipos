@@ -22,6 +22,7 @@
 <script>
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import { collection, addDoc } from "firebase/firestore"; // Importar Firestore y funciones necesarias
 import { db } from '@/firebase'; // Asegúrate de que la ruta de Firebase es correcta
 
 export default {
@@ -56,9 +57,8 @@ export default {
     async importarDatos() {
       try {
         const apiKey = 'AIzaSyB8qiDNiIZkmLRSRGS1biPFKo1KjE-lfQY'; // Sustituye por tu clave API
-        const spreadsheetId = '16HVbnQpFlYAWc03dvmyVkV4lNFY_B9q8FCE55Zd01ds'; // Sustituye por el ID de tu hoja de cálculo
+        const spreadsheetId = '16HVbnQpFlYAWc03dvmyVkV4lNFY_B9q8FCE55Zd01ds'; // ID de tu hoja de cálculo
         const range = 'INVENTARIO2!B6:S'; // Rango de celdas a importar
-
 
         const response = await axios.get(`https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${range}?key=${apiKey}`);
         const data = response.data.values;
@@ -105,7 +105,8 @@ export default {
     async enviarDatos() {
       try {
         for (const equipo of this.equipos) {
-          await db.collection('equipos').add({
+          // Añade un documento en la colección 'equipos'
+          await addDoc(collection(db, 'equipos'), {
             dependencia: equipo.dependencia,
             propiedad: equipo.propiedad,
             nombreEquipo: equipo.nombreEquipo,
@@ -167,7 +168,3 @@ export default {
   }
 };
 </script>
-
-<style scoped>
-/* Añadir estilos personalizados para el contenedor y la tabla */
-</style>
