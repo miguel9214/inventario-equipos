@@ -50,9 +50,61 @@
           <b-form-input v-model="equipoSeleccionado.so"></b-form-input>
         </b-form-group>
 
+        <b-form-group label="Paquete Ofimática">
+          <b-form-input v-model="equipoSeleccionado.paqueteOfimatica"></b-form-input>
+        </b-form-group>
 
+        <b-form-group label="Marca">
+          <b-form-input v-model="equipoSeleccionado.marca"></b-form-input>
+        </b-form-group>
 
+        <b-form-group label="Procesador" >
+          <b-form-input v-model="equipoSeleccionado.cpu"></b-form-input>
+        </b-form-group>
+
+        <b-form-group label="Almacenamiento (GB)">
+          <b-form-input v-model="equipoSeleccionado.hdd" ></b-form-input>
+        </b-form-group>
+
+        <b-form-group label="Memoria Ram (GB)">
+          <b-form-input v-model="equipoSeleccionado.ram" ></b-form-input>
+        </b-form-group>
+
+        <b-form-group label="Direccion IP">
+          <b-form-input  v-model="equipoSeleccionado.ip"></b-form-input>
+        </b-form-group>
+
+        <b-form-group label="Direccion MAC">
+          <b-form-input  v-model="equipoSeleccionado.mac" ></b-form-input>
+        </b-form-group>
         
+        <b-form-group label="Serial" >
+          <b-form-input v-model="equipoSeleccionado.serial" ></b-form-input>
+        </b-form-group>
+
+        <b-form-group label="Activo fijo">
+          <b-form-input  v-model="equipoSeleccionado.activoFijo"></b-form-input>
+        </b-form-group>
+
+        <b-form-group label="Anydesk">
+          <b-form-input  v-model="equipoSeleccionado.anydesk"></b-form-input>
+        </b-form-group>
+
+        <b-form-group label="Impresora">
+          <b-form-input v-model="equipoSeleccionado.impresora"></b-form-input>
+        </b-form-group>
+
+        <b-form-group label="Activo fijo impresora">
+          <b-form-input  v-model="equipoSeleccionado.activoFijoImpresora"></b-form-input>
+        </b-form-group>
+
+        <b-form-group label="Escaner">
+          <b-form-input  v-model="equipoSeleccionado.escaner"></b-form-input>
+        </b-form-group>
+        
+        <b-form-group label="Activo fijo escaner">
+          <b-form-input  v-model="equipoSeleccionado.activoFijoEscaner"></b-form-input>
+        </b-form-group>
         <!-- Continuar con otros campos -->
       </b-form>
     </b-modal>
