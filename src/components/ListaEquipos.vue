@@ -1,5 +1,17 @@
 <template>
-  <b-container>
+  <b-container fluid class="mt-4">
+    <!-- Botones para exportar en PDF y Excel -->
+    <b-row class="mb-3">
+      <b-col>
+        <b-button variant="success" @click="exportarExcel">
+          <font-awesome-icon icon="file-excel" /> Exportar a Excel
+        </b-button>
+        <b-button variant="danger" @click="exportarPDF">
+          <font-awesome-icon icon="file-pdf" /> Exportar a PDF
+        </b-button>
+      </b-col>
+    </b-row>
+
     <!-- Campo de búsqueda global -->
     <b-row>
       <b-col>
@@ -11,26 +23,31 @@
       </b-col>
     </b-row>
 
-    <!-- Tabla con ordenación y botones de editar y eliminar -->
-    <b-table
-      :items="ordenarItemsPorColumna(equiposFiltrados, sortBy, sortDesc)"
-      :fields="fields"
-      striped
-      hover
-      responsive="sm"
-      @sort-changed="onSortChanged"
-    >
-      <template v-slot:cell(actions)="data">
-        <!-- Botón de editar -->
-        <b-button variant="warning" @click="abrirModalEditar(data.item)">
-          <font-awesome-icon icon="edit" /> Editar
-        </b-button>
-        <!-- Botón de eliminar -->
-        <b-button variant="danger" @click="confirmarEliminarEquipo(data.item.id)">
-          <font-awesome-icon icon="trash" /> Eliminar
-        </b-button>
-      </template>
-    </b-table>
+    <!-- Tabla con contenedor y límites de tamaño para responsividad -->
+    <b-row class="mt-3">
+      <b-col>
+        <b-table
+          :items="ordenarItemsPorColumna(equiposFiltrados, sortBy, sortDesc)"
+          :fields="fields"
+          striped
+          hover
+          responsive="sm"
+          class="table-responsive-md"
+          @sort-changed="onSortChanged"
+        >
+          <template v-slot:cell(actions)="data">
+            <!-- Botón de editar -->
+            <b-button variant="warning" @click="abrirModalEditar(data.item)">
+              <font-awesome-icon icon="edit" /> Editar
+            </b-button>
+            <!-- Botón de eliminar -->
+            <b-button variant="danger" @click="confirmarEliminarEquipo(data.item.id)">
+              <font-awesome-icon icon="trash" /> Eliminar
+            </b-button>
+          </template>
+        </b-table>
+      </b-col>
+    </b-row>
 
     <!-- Modal para editar equipo -->
     <b-modal v-model="mostrarModal" title="Editar Equipo" @ok="guardarCambios">
@@ -41,71 +58,54 @@
         <b-form-group label="Propiedad">
           <b-form-input v-model="equipoSeleccionado.propiedad"></b-form-input>
         </b-form-group>
-        <!-- Añadir más campos aquí según tus necesidades -->
         <b-form-group label="Nombre de Equipo">
           <b-form-input v-model="equipoSeleccionado.nombreEquipo"></b-form-input>
         </b-form-group>
-
         <b-form-group label="Sistema operativo">
           <b-form-input v-model="equipoSeleccionado.so"></b-form-input>
         </b-form-group>
-
         <b-form-group label="Paquete Ofimática">
           <b-form-input v-model="equipoSeleccionado.paqueteOfimatica"></b-form-input>
         </b-form-group>
-
         <b-form-group label="Marca">
           <b-form-input v-model="equipoSeleccionado.marca"></b-form-input>
         </b-form-group>
-
-        <b-form-group label="Procesador" >
+        <b-form-group label="Procesador">
           <b-form-input v-model="equipoSeleccionado.cpu"></b-form-input>
         </b-form-group>
-
         <b-form-group label="Almacenamiento (GB)">
-          <b-form-input v-model="equipoSeleccionado.hdd" ></b-form-input>
+          <b-form-input v-model="equipoSeleccionado.hdd"></b-form-input>
         </b-form-group>
-
         <b-form-group label="Memoria Ram (GB)">
-          <b-form-input v-model="equipoSeleccionado.ram" ></b-form-input>
+          <b-form-input v-model="equipoSeleccionado.ram"></b-form-input>
         </b-form-group>
-
         <b-form-group label="Direccion IP">
-          <b-form-input  v-model="equipoSeleccionado.ip"></b-form-input>
+          <b-form-input v-model="equipoSeleccionado.ip"></b-form-input>
         </b-form-group>
-
         <b-form-group label="Direccion MAC">
-          <b-form-input  v-model="equipoSeleccionado.mac" ></b-form-input>
+          <b-form-input v-model="equipoSeleccionado.mac"></b-form-input>
         </b-form-group>
-        
-        <b-form-group label="Serial" >
-          <b-form-input v-model="equipoSeleccionado.serial" ></b-form-input>
+        <b-form-group label="Serial">
+          <b-form-input v-model="equipoSeleccionado.serial"></b-form-input>
         </b-form-group>
-
         <b-form-group label="Activo fijo">
-          <b-form-input  v-model="equipoSeleccionado.activoFijo"></b-form-input>
+          <b-form-input v-model="equipoSeleccionado.activoFijo"></b-form-input>
         </b-form-group>
-
         <b-form-group label="Anydesk">
-          <b-form-input  v-model="equipoSeleccionado.anydesk"></b-form-input>
+          <b-form-input v-model="equipoSeleccionado.anydesk"></b-form-input>
         </b-form-group>
-
         <b-form-group label="Impresora">
           <b-form-input v-model="equipoSeleccionado.impresora"></b-form-input>
         </b-form-group>
-
         <b-form-group label="Activo fijo impresora">
-          <b-form-input  v-model="equipoSeleccionado.activoFijoImpresora"></b-form-input>
+          <b-form-input v-model="equipoSeleccionado.activoFijoImpresora"></b-form-input>
         </b-form-group>
-
         <b-form-group label="Escaner">
-          <b-form-input  v-model="equipoSeleccionado.escaner"></b-form-input>
+          <b-form-input v-model="equipoSeleccionado.escaner"></b-form-input>
         </b-form-group>
-        
         <b-form-group label="Activo fijo escaner">
-          <b-form-input  v-model="equipoSeleccionado.activoFijoEscaner"></b-form-input>
+          <b-form-input v-model="equipoSeleccionado.activoFijoEscaner"></b-form-input>
         </b-form-group>
-        <!-- Continuar con otros campos -->
       </b-form>
     </b-modal>
   </b-container>
@@ -115,6 +115,9 @@
 import { collection, getDocs, doc, deleteDoc, updateDoc } from 'firebase/firestore';
 import { db } from '@/firebase'; // Asegúrate de que la ruta sea correcta
 import Swal from 'sweetalert2';
+import * as XLSX from 'xlsx'; // Importación de la librería XLSX para exportar a Excel
+import jsPDF from 'jspdf'; // Importación de jsPDF
+import 'jspdf-autotable'; // Importación de autotable para las tablas en PDF
 
 export default {
   data() {
@@ -256,7 +259,57 @@ export default {
           confirmButtonText: 'Intentar de nuevo'
         });
       }
+    },
+    // Función para exportar a Excel
+    exportarExcel() {
+      const wb = XLSX.utils.book_new();
+      const ws = XLSX.utils.json_to_sheet(
+        this.equiposFiltrados.map(equipo => ({
+          Dependencia: equipo.dependencia,
+          Propiedad: equipo.propiedad,
+          'Nombre de Equipo': equipo.nombreEquipo,
+          IP: equipo.ip,
+          MAC: equipo.mac,
+          Serial: equipo.serial,
+          'Activo Fijo': equipo.activoFijo,
+          Anydesk: equipo.anydesk,
+          Impresora: equipo.impresora,
+          'Activo Fijo Impresora': equipo.activoFijoImpresora,
+          Escáner: equipo.escaner,
+          'Activo Fijo Escáner': equipo.activoFijoEscaner,
+        }))
+      );
+      XLSX.utils.book_append_sheet(wb, ws, 'Equipos');
+      XLSX.writeFile(wb, 'equipos.xlsx');
+    },
+    // Función para exportar a PDF
+    exportarPDF() {
+      const doc = new jsPDF();
+      doc.autoTable({
+        head: [['Dependencia', 'Propiedad', 'Nombre de Equipo', 'IP', 'MAC', 'Serial', 'Activo Fijo', 'Anydesk', 'Impresora', 'Escáner']],
+        body: this.equiposFiltrados.map(equipo => [
+          equipo.dependencia,
+          equipo.propiedad,
+          equipo.nombreEquipo,
+          equipo.ip,
+          equipo.mac,
+          equipo.serial,
+          equipo.activoFijo,
+          equipo.anydesk,
+          equipo.impresora,
+          equipo.escaner,
+        ]),
+      });
+      doc.save('equipos.pdf');
     }
   }
 };
+
 </script>
+
+<style scoped>
+.table-responsive-md {
+  max-height: 500px;
+  overflow-y: auto;
+}
+</style>
