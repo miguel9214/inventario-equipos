@@ -229,23 +229,23 @@ export default {
       const filtro = this.filtroGlobal.toLowerCase();
       this.equiposFiltrados = this.equipos.filter((equipo) => {
         return (
-          equipo.dependencia.toLowerCase().includes(filtro) ||
-          equipo.propiedad.toLowerCase().includes(filtro) ||
-          equipo.nombreEquipo.toLowerCase().includes(filtro) ||
-          equipo.so.toLowerCase().includes(filtro) ||
-          equipo.paqueteOfimatica.toLowerCase().includes(filtro) ||
-          equipo.marca.toLowerCase().includes(filtro) ||
-          equipo.cpu.toLowerCase().includes(filtro) ||
-          equipo.hdd.toString().toLowerCase().includes(filtro) ||
-          equipo.ram.toString().toLowerCase().includes(filtro) ||
-          equipo.ip.toLowerCase().includes(filtro) ||
-          equipo.mac.toLowerCase().includes(filtro) ||
-          equipo.serial.toLowerCase().includes(filtro) ||
-          equipo.activoFijo.toLowerCase().includes(filtro) ||
-          equipo.anydesk.toLowerCase().includes(filtro) ||
-          equipo.impresora.toLowerCase().includes(filtro) ||
-          equipo.estado.toLowerCase().includes(filtro) || // Filtro para el estado del equipo
-          equipo.observaciones.toLowerCase().includes(filtro) // Filtro para observaciones
+          (equipo.dependencia || "").toLowerCase().includes(filtro) ||
+          (equipo.propiedad || "").toLowerCase().includes(filtro) ||
+          (equipo.nombreEquipo || "").toLowerCase().includes(filtro) ||
+          (equipo.so || "").toLowerCase().includes(filtro) ||
+          (equipo.paqueteOfimatica || "").toLowerCase().includes(filtro) ||
+          (equipo.marca || "").toLowerCase().includes(filtro) ||
+          (equipo.cpu || "").toLowerCase().includes(filtro) ||
+          (equipo.hdd || "").toString().toLowerCase().includes(filtro) ||
+          (equipo.ram || "").toString().toLowerCase().includes(filtro) ||
+          (equipo.ip || "").toLowerCase().includes(filtro) ||
+          (equipo.mac || "").toLowerCase().includes(filtro) ||
+          (equipo.serial || "").toLowerCase().includes(filtro) ||
+          (equipo.activoFijo || "").toLowerCase().includes(filtro) ||
+          (equipo.anydesk || "").toLowerCase().includes(filtro) ||
+          (equipo.impresora || "").toLowerCase().includes(filtro) ||
+          (equipo.estado || "").toLowerCase().includes(filtro) || // Filtro para estado
+          (equipo.observaciones || "").toLowerCase().includes(filtro) // Filtro para observaciones
         );
       });
     },
