@@ -35,6 +35,17 @@
           class="table-responsive-md"
           @sort-changed="onSortChanged"
         >
+          <template v-slot:cell(observaciones)="data">
+            <!-- Verificación antes de mostrar observaciones -->
+            <span>
+              {{
+                data.value && data.value.length > 50
+                  ? data.value.slice(0, 50) + "..."
+                  : data.value || ""
+              }}
+            </span>
+          </template>
+
           <template v-slot:cell(actions)="data">
             <!-- Botón de editar -->
             <b-button variant="warning" @click="abrirModalEditar(data.item)">
@@ -126,6 +137,11 @@
           ></b-form-select>
         </b-form-group>
 
+        <!-- Nuevo campo: Operador del equipo -->
+        <b-form-group label="Operador del equipo">
+          <b-form-input v-model="equipoSeleccionado.operador"></b-form-input>
+        </b-form-group>
+
         <!-- Nuevo campo: Observaciones -->
         <b-form-group label="Observaciones">
           <b-form-textarea
@@ -189,46 +205,36 @@ export default {
           label: "N° Activo Fijo Escáner",
           sortable: true,
         },
-        { key: "estado", label: "Estado del equipo", sortable: true }, // Nuevo campo: Estado
-        { key: "observaciones", label: "Observaciones", sortable: true }, // Nuevo campo: Observaciones
+        { key: "estado", label: "Estado del equipo", sortable: true },
+        { key: "operador", label: "Operador", sortable: true },
+        { key: "observaciones", label: "Observaciones", sortable: true },
         { key: "actions", label: "Acciones", sortable: false },
       ],
     };
   },
-  mounted() {
-    this.obtenerEquipos();
-  },
   methods: {
-    // Convertir IP a número para ordenación
-    ipToNumber(ip) {
-      return ip
-        .split(".")
-        .reduce((acc, octet) => (acc << 8) + parseInt(octet, 10), 0);
-    },
-    // Ordenar por IP
-    sortByIp(items, sortDesc) {
-      return items.slice().sort((a, b) => {
-        const aIp = this.ipToNumber(a.ip);
-        const bIp = this.ipToNumber(b.ip);
-        return sortDesc ? bIp - aIp : aIp - bIp;
-      });
-    },
-    // Ordenar por cualquier columna
+    // Método para ordenar los items
     ordenarItemsPorColumna(items, sortBy, sortDesc) {
-      if (sortBy === "ip") {
-        return this.sortByIp(items, sortDesc);
-      }
-      return items.slice().sort((a, b) => {
-        const aVal = a[sortBy];
-        const bVal = b[sortBy];
-        if (aVal === bVal) return 0;
-        return sortDesc ? (aVal < bVal ? 1 : -1) : aVal > bVal ? 1 : -1;
+      return [...items].sort((a, b) => {
+        const compareA = a[sortBy] || "";
+        const compareB = b[sortBy] || "";
+        if (compareA < compareB) return sortDesc ? 1 : -1;
+        if (compareA > compareB) return sortDesc ? -1 : 1;
+        return 0;
       });
     },
+    // Método para manejar el cambio de orden
+    onSortChanged(ctx) {
+      this.sortBy = ctx.sortBy;
+      this.sortDesc = ctx.sortDesc;
+    },
+    // Aplicar filtro global
     aplicarFiltroGlobal() {
       const filtro = this.filtroGlobal.toLowerCase();
       this.equiposFiltrados = this.equipos.filter((equipo) => {
         return (
+          equipo.dependencia.toLowerCase().includes(filtro) ||
+          equipo.propiedad.toLowerCase().includes(filtro) ||
           (equipo.dependencia || "").toLowerCase().includes(filtro) ||
           (equipo.propiedad || "").toLowerCase().includes(filtro) ||
           (equipo.nombreEquipo || "").toLowerCase().includes(filtro) ||
@@ -245,138 +251,75 @@ export default {
           (equipo.anydesk || "").toLowerCase().includes(filtro) ||
           (equipo.impresora || "").toLowerCase().includes(filtro) ||
           (equipo.estado || "").toLowerCase().includes(filtro) || // Filtro para estado
-          (equipo.observaciones || "").toLowerCase().includes(filtro) // Filtro para observaciones
+          (equipo.observaciones || "").toLowerCase().includes(filtro) // Filtro para observacione
         );
       });
     },
-    // Abrir modal para editar
+    // Obtener los datos de Firebase
+    async obtenerEquipos() {
+      const equiposSnapshot = await getDocs(collection(db, "equipos"));
+      this.equipos = equiposSnapshot.docs.map((doc) => doc.data());
+      this.equiposFiltrados = this.equipos;
+    },
+    // Abrir modal de edición
     abrirModalEditar(equipo) {
       this.equipoSeleccionado = { ...equipo };
       this.mostrarModal = true;
     },
-    // Guardar cambios
+    // Guardar cambios en el equipo
     async guardarCambios() {
-      if (this.equipoSeleccionado.id) {
-        const equipoRef = doc(db, "equipos", this.equipoSeleccionado.id);
-        await updateDoc(equipoRef, this.equipoSeleccionado);
-        Swal.fire("Éxito", "Equipo actualizado correctamente", "success");
-        this.obtenerEquipos();
-      }
+      await updateDoc(doc(db, "equipos", this.equipoSeleccionado.id), {
+        ...this.equipoSeleccionado,
+      });
       this.mostrarModal = false;
+      Swal.fire("Guardado", "Los cambios han sido guardados", "success");
+      this.obtenerEquipos(); // Actualizar lista de equipos
     },
     // Confirmar eliminación
-    async confirmarEliminarEquipo(equipoId) {
-      const confirm = await Swal.fire({
+    confirmarEliminarEquipo(id) {
+      Swal.fire({
         title: "¿Estás seguro?",
-        text: "¡No podrás revertir esto!",
+        text: "No podrás revertir esto.",
         icon: "warning",
         showCancelButton: true,
         confirmButtonText: "Sí, eliminar",
         cancelButtonText: "Cancelar",
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          await deleteDoc(doc(db, "equipos", id));
+          Swal.fire("Eliminado", "El equipo ha sido eliminado.", "success");
+          this.obtenerEquipos(); // Actualizar lista de equipos
+        }
       });
-      if (confirm.isConfirmed) {
-        await deleteDoc(doc(db, "equipos", equipoId));
-        Swal.fire("Eliminado", "El equipo ha sido eliminado", "success");
-        this.obtenerEquipos();
-      }
     },
-    // Obtener los equipos de la base de datos
-    async obtenerEquipos() {
-      const querySnapshot = await getDocs(collection(db, "equipos"));
-      this.equipos = querySnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      this.equiposFiltrados = this.equipos;
-    },
-    // Exportar tabla a Excel
+    // Exportar a Excel
     exportarExcel() {
+      const ws = XLSX.utils.json_to_sheet(this.equiposFiltrados);
       const wb = XLSX.utils.book_new();
-      const ws = XLSX.utils.json_to_sheet(
-        this.equiposFiltrados.map((equipo) => ({
-          Dependencia: equipo.dependencia,
-          Propiedad: equipo.propiedad,
-          "Nombre de Equipo": equipo.nombreEquipo,
-          SO: equipo.so,
-          "Paquete Ofimática": equipo.paqueteOfimatica,
-          Marca: equipo.marca,
-          Procesador: equipo.cpu,
-          "Almacenamiento (GB)": equipo.hdd,
-          "Memoria Ram (GB)": equipo.ram,
-          IP: equipo.ip,
-          MAC: equipo.mac,
-          Serial: equipo.serial,
-          "Activo Fijo": equipo.activoFijo,
-          Anydesk: equipo.anydesk,
-          Impresora: equipo.impresora,
-          Escáner: equipo.escaner,
-          Estado: equipo.estado, // Estado del equipo
-          Observaciones: equipo.observaciones, // Observaciones
-        }))
-      );
       XLSX.utils.book_append_sheet(wb, ws, "Equipos");
       XLSX.writeFile(wb, "equipos.xlsx");
     },
-    // Exportar tabla a PDF
+    // Exportar a PDF
     exportarPDF() {
       const doc = new jsPDF();
-      const columnas = [
-        "Dependencia",
-        "Propiedad",
-        "Nombre de Equipo",
-        "SO",
-        "Paquete Ofimática",
-        "Marca",
-        "CPU",
-        "HDD (GB)",
-        "RAM (GB)",
-        "IP",
-        "MAC",
-        "Serial",
-        "Activo Fijo",
-        "Anydesk",
-        "Impresora",
-        "Escáner",
-        "Estado", // Estado del equipo
-        "Observaciones", // Observaciones
-      ];
-      const filas = this.equiposFiltrados.map((equipo) => [
-        equipo.dependencia,
-        equipo.propiedad,
-        equipo.nombreEquipo,
-        equipo.so,
-        equipo.paqueteOfimatica,
-        equipo.marca,
-        equipo.cpu,
-        equipo.hdd,
-        equipo.ram,
-        equipo.ip,
-        equipo.mac,
-        equipo.serial,
-        equipo.activoFijo,
-        equipo.anydesk,
-        equipo.impresora,
-        equipo.escaner,
-        equipo.estado, // Estado del equipo
-        equipo.observaciones, // Observaciones
-      ]);
       doc.autoTable({
-        head: [columnas],
-        body: filas,
+        head: [this.fields.map((field) => field.label)],
+        body: this.equiposFiltrados.map((equipo) =>
+          this.fields.map((field) => equipo[field.key] || "")
+        ),
       });
       doc.save("equipos.pdf");
     },
+  },
+  created() {
+    this.obtenerEquipos();
   },
 };
 </script>
 
 <style scoped>
 .table-responsive-md {
-  max-height: 500px;
+  max-height: 600px;
   overflow-y: auto;
-}
-
-.table {
-  white-space: nowrap;
 }
 </style>
