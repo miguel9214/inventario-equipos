@@ -5,13 +5,14 @@ import { getFirestore } from 'firebase/firestore';
 
 // Tu configuración de Firebase
 const firebaseConfig = {
-  apiKey: "AIzaSyCuaXEzJKyqL1gkGccORir1VTno8YRCjT0",
-  authDomain: "inventario-22df1.firebaseapp.com",
-  projectId: "inventario-22df1",
-  storageBucket: "inventario-22df1.appspot.com",
-  messagingSenderId: "270022087066",
-  appId: "1:270022087066:web:864ac621bedc19a55eaa23"
+  apiKey: "AIzaSyCB_t1dRLk5TxDvFqGiALod5vLDprfcibY",
+  authDomain: "inventario-25418.firebaseapp.com",
+  projectId: "inventario-25418",
+  storageBucket: "inventario-25418.appspot.com",
+  messagingSenderId: "375956630937",
+  appId: "1:375956630937:web:d6829818c7212148ad3708"
 };
+
 
 // Inicializa Firebase
 const app = initializeApp(firebaseConfig);
