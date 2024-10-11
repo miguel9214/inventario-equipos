@@ -255,5 +255,6 @@ export default {
   max-height: 500px; /* Limitar la altura para el scroll vertical */
   overflow-x: auto; /* Scroll horizontal */
   overflow-y: auto; /* Scroll vertical */
+  
 }
 </style>
