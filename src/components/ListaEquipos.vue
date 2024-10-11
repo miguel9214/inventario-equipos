@@ -37,7 +37,11 @@
           >
             <template v-slot:cell(observaciones)="data">
               <span>
-                {{ data.value && data.value.length > 50 ? data.value.slice(0, 50) + "..." : data.value || "" }}
+                {{
+                  data.value && data.value.length > 50
+                    ? data.value.slice(0, 50) + "..."
+                    : data.value || ""
+                }}
               </span>
             </template>
 
@@ -45,7 +49,10 @@
               <b-button variant="warning" @click="abrirModalEditar(data.item)">
                 <font-awesome-icon icon="edit" /> Editar
               </b-button>
-              <b-button variant="danger" @click="confirmarEliminarEquipo(data.item.id)">
+              <b-button
+                variant="danger"
+                @click="confirmarEliminarEquipo(data.item.id)"
+              >
                 <font-awesome-icon icon="trash" /> Eliminar
               </b-button>
             </template>
@@ -56,120 +63,133 @@
 
     <!-- Modal para editar equipo -->
     <b-modal v-model="mostrarModal" title="Editar Equipo" @ok="guardarCambios">
-  <b-form>
-    <!-- Dependencia -->
-    <b-form-group label="Dependencia">
-      <b-form-input v-model="equipoSeleccionado.dependencia"></b-form-input>
-    </b-form-group>
+      <b-form>
+        <!-- Dependencia -->
+        <b-form-group label="Dependencia">
+          <b-form-input v-model="equipoSeleccionado.dependencia"></b-form-input>
+        </b-form-group>
 
-    <!-- Propiedad -->
-    <b-form-group label="Propiedad">
-      <b-form-input v-model="equipoSeleccionado.propiedad"></b-form-input>
-    </b-form-group>
+        <!-- Propiedad -->
+        <b-form-group label="Propiedad">
+          <b-form-input v-model="equipoSeleccionado.propiedad"></b-form-input>
+        </b-form-group>
 
-    <!-- Nombre de Equipo -->
-    <b-form-group label="Nombre de Equipo">
-      <b-form-input v-model="equipoSeleccionado.nombreEquipo"></b-form-input>
-    </b-form-group>
+        <!-- Nombre de Equipo -->
+        <b-form-group label="Nombre de Equipo">
+          <b-form-input
+            v-model="equipoSeleccionado.nombreEquipo"
+          ></b-form-input>
+        </b-form-group>
 
-    <!-- Sistema Operativo (SO) -->
-    <b-form-group label="Sistema Operativo">
-      <b-form-input v-model="equipoSeleccionado.so"></b-form-input>
-    </b-form-group>
+        <!-- Sistema Operativo (SO) -->
+        <b-form-group label="Sistema Operativo">
+          <b-form-input v-model="equipoSeleccionado.so"></b-form-input>
+        </b-form-group>
 
-    <!-- Paquete Ofimática -->
-    <b-form-group label="Paquete Ofimática">
-      <b-form-input v-model="equipoSeleccionado.paqueteOfimatica"></b-form-input>
-    </b-form-group>
+        <!-- Paquete Ofimática -->
+        <b-form-group label="Paquete Ofimática">
+          <b-form-input
+            v-model="equipoSeleccionado.paqueteOfimatica"
+          ></b-form-input>
+        </b-form-group>
 
-    <!-- Marca -->
-    <b-form-group label="Marca">
-      <b-form-input v-model="equipoSeleccionado.marca"></b-form-input>
-    </b-form-group>
+        <!-- Marca -->
+        <b-form-group label="Marca">
+          <b-form-input v-model="equipoSeleccionado.marca"></b-form-input>
+        </b-form-group>
 
-    <!-- CPU -->
-    <b-form-group label="CPU">
-      <b-form-input v-model="equipoSeleccionado.cpu"></b-form-input>
-    </b-form-group>
+        <!-- CPU -->
+        <b-form-group label="CPU">
+          <b-form-input v-model="equipoSeleccionado.cpu"></b-form-input>
+        </b-form-group>
 
-    <!-- HDD (GB) -->
-    <b-form-group label="HDD (GB)">
-      <b-form-input v-model="equipoSeleccionado.hdd" type="number"></b-form-input>
-    </b-form-group>
+        <!-- HDD (GB) -->
+        <b-form-group label="HDD (GB)">
+          <b-form-input
+            v-model="equipoSeleccionado.hdd"
+            type="number"
+          ></b-form-input>
+        </b-form-group>
 
-    <!-- RAM (GB) -->
-    <b-form-group label="RAM (GB)">
-      <b-form-input v-model="equipoSeleccionado.ram" type="number"></b-form-input>
-    </b-form-group>
+        <!-- RAM (GB) -->
+        <b-form-group label="RAM (GB)">
+          <b-form-input
+            v-model="equipoSeleccionado.ram"
+            type="number"
+          ></b-form-input>
+        </b-form-group>
 
-    <!-- IP -->
-    <b-form-group label="IP">
-      <b-form-input v-model="equipoSeleccionado.ip"></b-form-input>
-    </b-form-group>
+        <!-- IP -->
+        <b-form-group label="IP">
+          <b-form-input v-model="equipoSeleccionado.ip"></b-form-input>
+        </b-form-group>
 
-    <!-- MAC -->
-    <b-form-group label="MAC">
-      <b-form-input v-model="equipoSeleccionado.mac"></b-form-input>
-    </b-form-group>
+        <!-- MAC -->
+        <b-form-group label="MAC">
+          <b-form-input v-model="equipoSeleccionado.mac"></b-form-input>
+        </b-form-group>
 
-    <!-- Serial -->
-    <b-form-group label="Serial">
-      <b-form-input v-model="equipoSeleccionado.serial"></b-form-input>
-    </b-form-group>
+        <!-- Serial -->
+        <b-form-group label="Serial">
+          <b-form-input v-model="equipoSeleccionado.serial"></b-form-input>
+        </b-form-group>
 
-    <!-- N° Activo Fijo -->
-    <b-form-group label="N° Activo Fijo">
-      <b-form-input v-model="equipoSeleccionado.activoFijo"></b-form-input>
-    </b-form-group>
+        <!-- N° Activo Fijo -->
+        <b-form-group label="N° Activo Fijo">
+          <b-form-input v-model="equipoSeleccionado.activoFijo"></b-form-input>
+        </b-form-group>
 
-    <!-- Anydesk -->
-    <b-form-group label="Anydesk">
-      <b-form-input v-model="equipoSeleccionado.anydesk"></b-form-input>
-    </b-form-group>
+        <!-- Anydesk -->
+        <b-form-group label="Anydesk">
+          <b-form-input v-model="equipoSeleccionado.anydesk"></b-form-input>
+        </b-form-group>
 
-    <!-- Impresora -->
-    <b-form-group label="Impresora">
-      <b-form-input v-model="equipoSeleccionado.impresora"></b-form-input>
-    </b-form-group>
+        <!-- Impresora -->
+        <b-form-group label="Impresora">
+          <b-form-input v-model="equipoSeleccionado.impresora"></b-form-input>
+        </b-form-group>
 
-    <!-- N° Activo Fijo Impresora -->
-    <b-form-group label="N° Activo Fijo Impresora">
-      <b-form-input v-model="equipoSeleccionado.activoFijoImpresora"></b-form-input>
-    </b-form-group>
+        <!-- N° Activo Fijo Impresora -->
+        <b-form-group label="N° Activo Fijo Impresora">
+          <b-form-input
+            v-model="equipoSeleccionado.activoFijoImpresora"
+          ></b-form-input>
+        </b-form-group>
 
-    <!-- Escáner -->
-    <b-form-group label="Escáner">
-      <b-form-input v-model="equipoSeleccionado.escaner"></b-form-input>
-    </b-form-group>
+        <!-- Escáner -->
+        <b-form-group label="Escáner">
+          <b-form-input v-model="equipoSeleccionado.escaner"></b-form-input>
+        </b-form-group>
 
-    <!-- N° Activo Fijo Escáner -->
-    <b-form-group label="N° Activo Fijo Escáner">
-      <b-form-input v-model="equipoSeleccionado.activoFijoEscaner"></b-form-input>
-    </b-form-group>
+        <!-- N° Activo Fijo Escáner -->
+        <b-form-group label="N° Activo Fijo Escáner">
+          <b-form-input
+            v-model="equipoSeleccionado.activoFijoEscaner"
+          ></b-form-input>
+        </b-form-group>
 
-    <!-- Estado del equipo -->
-    <b-form-group label="Estado del equipo">
-      <b-form-select
-        v-model="equipoSeleccionado.estado"
-        :options="['Excelente', 'Regular', 'Malo']"
-      ></b-form-select>
-    </b-form-group>
+        <!-- Estado del equipo -->
+        <b-form-group label="Estado del equipo">
+          <b-form-select
+            v-model="equipoSeleccionado.estado"
+            :options="['Excelente', 'Regular', 'Malo']"
+          ></b-form-select>
+        </b-form-group>
 
-    <!-- Operador del equipo -->
-    <b-form-group label="Operador del equipo">
-      <b-form-input v-model="equipoSeleccionado.operador"></b-form-input>
-    </b-form-group>
+        <!-- Operador del equipo -->
+        <b-form-group label="Operador del equipo">
+          <b-form-input v-model="equipoSeleccionado.operador"></b-form-input>
+        </b-form-group>
 
-    <!-- Observaciones -->
-    <b-form-group label="Observaciones">
-      <b-form-textarea
-        v-model="equipoSeleccionado.observaciones"
-        placeholder="Agregar observaciones sobre el equipo"
-      ></b-form-textarea>
-    </b-form-group>
-  </b-form>
-</b-modal>
-
+        <!-- Observaciones -->
+        <b-form-group label="Observaciones">
+          <b-form-textarea
+            v-model="equipoSeleccionado.observaciones"
+            placeholder="Agregar observaciones sobre el equipo"
+          ></b-form-textarea>
+        </b-form-group>
+      </b-form>
+    </b-modal>
   </b-container>
 </template>
 
@@ -289,10 +309,37 @@ export default {
     // Guardar cambios del equipo editado
     async guardarCambios() {
       if (this.equipoSeleccionado.id) {
-        const equipoDocRef = doc(db, "equipos", this.equipoSeleccionado.id);
-        await updateDoc(equipoDocRef, this.equipoSeleccionado);
-        this.mostrarModal = false; // Cierra el modal después de guardar
-        await this.obtenerEquipos(); // Actualiza la lista después de editar
+        try {
+          // Referencia al documento del equipo
+          const equipoDocRef = doc(db, "equipos", this.equipoSeleccionado.id);
+
+          // Actualiza el documento en Firebase con los datos seleccionados
+          await updateDoc(equipoDocRef, this.equipoSeleccionado);
+
+          // Cierra el modal después de guardar
+          this.mostrarModal = false;
+
+          // Actualiza la lista de equipos después de editar
+          await this.obtenerEquipos();
+
+          // Mostrar la notificación de éxito con SweetAlert2
+          Swal.fire({
+            title: "¡Actualización exitosa!",
+            text: "El equipo ha sido actualizado correctamente.",
+            icon: "success",
+            confirmButtonText: "Aceptar",
+          });
+        } catch (error) {
+          console.error("Error al actualizar el equipo: ", error);
+
+          // Mostrar notificación de error en caso de fallo
+          Swal.fire({
+            title: "Error",
+            text: "Hubo un problema al actualizar el equipo.",
+            icon: "error",
+            confirmButtonText: "Aceptar",
+          });
+        }
       } else {
         console.error("Error: El equipo seleccionado no tiene un ID válido");
       }
@@ -346,6 +393,5 @@ export default {
   max-height: 500px; /* Limitar la altura para el scroll vertical */
   overflow-x: auto; /* Scroll horizontal */
   overflow-y: auto; /* Scroll vertical */
-  
 }
 </style>
