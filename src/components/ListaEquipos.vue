@@ -56,29 +56,120 @@
 
     <!-- Modal para editar equipo -->
     <b-modal v-model="mostrarModal" title="Editar Equipo" @ok="guardarCambios">
-      <b-form>
-        <!-- Campos de formulario para edición -->
-        <b-form-group label="Dependencia">
-          <b-form-input v-model="equipoSeleccionado.dependencia"></b-form-input>
-        </b-form-group>
-        <!-- Otros campos omitidos por brevedad -->
-        <b-form-group label="Estado del equipo">
-          <b-form-select
-            v-model="equipoSeleccionado.estado"
-            :options="['Excelente', 'Regular', 'Malo']"
-          ></b-form-select>
-        </b-form-group>
-        <b-form-group label="Operador del equipo">
-          <b-form-input v-model="equipoSeleccionado.operador"></b-form-input>
-        </b-form-group>
-        <b-form-group label="Observaciones">
-          <b-form-textarea
-            v-model="equipoSeleccionado.observaciones"
-            placeholder="Agregar observaciones sobre el equipo"
-          ></b-form-textarea>
-        </b-form-group>
-      </b-form>
-    </b-modal>
+  <b-form>
+    <!-- Dependencia -->
+    <b-form-group label="Dependencia">
+      <b-form-input v-model="equipoSeleccionado.dependencia"></b-form-input>
+    </b-form-group>
+
+    <!-- Propiedad -->
+    <b-form-group label="Propiedad">
+      <b-form-input v-model="equipoSeleccionado.propiedad"></b-form-input>
+    </b-form-group>
+
+    <!-- Nombre de Equipo -->
+    <b-form-group label="Nombre de Equipo">
+      <b-form-input v-model="equipoSeleccionado.nombreEquipo"></b-form-input>
+    </b-form-group>
+
+    <!-- Sistema Operativo (SO) -->
+    <b-form-group label="Sistema Operativo">
+      <b-form-input v-model="equipoSeleccionado.so"></b-form-input>
+    </b-form-group>
+
+    <!-- Paquete Ofimática -->
+    <b-form-group label="Paquete Ofimática">
+      <b-form-input v-model="equipoSeleccionado.paqueteOfimatica"></b-form-input>
+    </b-form-group>
+
+    <!-- Marca -->
+    <b-form-group label="Marca">
+      <b-form-input v-model="equipoSeleccionado.marca"></b-form-input>
+    </b-form-group>
+
+    <!-- CPU -->
+    <b-form-group label="CPU">
+      <b-form-input v-model="equipoSeleccionado.cpu"></b-form-input>
+    </b-form-group>
+
+    <!-- HDD (GB) -->
+    <b-form-group label="HDD (GB)">
+      <b-form-input v-model="equipoSeleccionado.hdd" type="number"></b-form-input>
+    </b-form-group>
+
+    <!-- RAM (GB) -->
+    <b-form-group label="RAM (GB)">
+      <b-form-input v-model="equipoSeleccionado.ram" type="number"></b-form-input>
+    </b-form-group>
+
+    <!-- IP -->
+    <b-form-group label="IP">
+      <b-form-input v-model="equipoSeleccionado.ip"></b-form-input>
+    </b-form-group>
+
+    <!-- MAC -->
+    <b-form-group label="MAC">
+      <b-form-input v-model="equipoSeleccionado.mac"></b-form-input>
+    </b-form-group>
+
+    <!-- Serial -->
+    <b-form-group label="Serial">
+      <b-form-input v-model="equipoSeleccionado.serial"></b-form-input>
+    </b-form-group>
+
+    <!-- N° Activo Fijo -->
+    <b-form-group label="N° Activo Fijo">
+      <b-form-input v-model="equipoSeleccionado.activoFijo"></b-form-input>
+    </b-form-group>
+
+    <!-- Anydesk -->
+    <b-form-group label="Anydesk">
+      <b-form-input v-model="equipoSeleccionado.anydesk"></b-form-input>
+    </b-form-group>
+
+    <!-- Impresora -->
+    <b-form-group label="Impresora">
+      <b-form-input v-model="equipoSeleccionado.impresora"></b-form-input>
+    </b-form-group>
+
+    <!-- N° Activo Fijo Impresora -->
+    <b-form-group label="N° Activo Fijo Impresora">
+      <b-form-input v-model="equipoSeleccionado.activoFijoImpresora"></b-form-input>
+    </b-form-group>
+
+    <!-- Escáner -->
+    <b-form-group label="Escáner">
+      <b-form-input v-model="equipoSeleccionado.escaner"></b-form-input>
+    </b-form-group>
+
+    <!-- N° Activo Fijo Escáner -->
+    <b-form-group label="N° Activo Fijo Escáner">
+      <b-form-input v-model="equipoSeleccionado.activoFijoEscaner"></b-form-input>
+    </b-form-group>
+
+    <!-- Estado del equipo -->
+    <b-form-group label="Estado del equipo">
+      <b-form-select
+        v-model="equipoSeleccionado.estado"
+        :options="['Excelente', 'Regular', 'Malo']"
+      ></b-form-select>
+    </b-form-group>
+
+    <!-- Operador del equipo -->
+    <b-form-group label="Operador del equipo">
+      <b-form-input v-model="equipoSeleccionado.operador"></b-form-input>
+    </b-form-group>
+
+    <!-- Observaciones -->
+    <b-form-group label="Observaciones">
+      <b-form-textarea
+        v-model="equipoSeleccionado.observaciones"
+        placeholder="Agregar observaciones sobre el equipo"
+      ></b-form-textarea>
+    </b-form-group>
+  </b-form>
+</b-modal>
+
   </b-container>
 </template>
 
